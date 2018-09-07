@@ -1,0 +1,6 @@
+framework module Pods_Fake_Tumblr {
+  umbrella header "Pods-Fake_Tumblr-umbrella.h"
+
+  export *
+  module * { export * }
+}
