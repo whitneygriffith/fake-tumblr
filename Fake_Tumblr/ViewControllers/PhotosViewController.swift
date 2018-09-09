@@ -22,7 +22,6 @@ class PhotosViewController: UIViewController, UITableViewDataSource {
         refreshControl.addTarget(self, action: #selector(PhotosViewController.didPullToRefresh(_:)), for: .valueChanged)
         tableView.insertSubview(refreshControl, at: 0)
         
-
         
         tableView.rowHeight = 220
         
@@ -68,6 +67,7 @@ class PhotosViewController: UIViewController, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
+        
         let post = posts[indexPath.row]
         
         if let photos = post["photos"] as? [[String: Any]] {
@@ -88,6 +88,27 @@ class PhotosViewController: UIViewController, UITableViewDataSource {
         return cell
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let cell = sender as! UITableViewCell
+        if let indexPath = tableView.indexPath(for: cell){
+            let post = posts[indexPath.row]
+            let vc = segue.destination as! PhotoDetailsViewController
+            let photos = post["photos"] as! [[String: Any]]
+            let photo = photos[0]
+            let originalSize = photo["original_size"] as! [String: Any]
+            // 3.
+            let urlString = originalSize["url"] as! String
+            // 4.
+            let url = URL(string: urlString)
+            vc.photoURL = url
+        }
+    }
+    
+    /*    @IBOutlet weak var detailPhotoView: UIImageView!
+     
+     var photoURL = URL(string: "")
+
+     */
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
